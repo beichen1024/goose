@@ -211,8 +211,11 @@ func EnsureDBVersion(db *sql.DB) (int64, error) {
 // EnsureDBVersionContext retrieves the current version for this DB.
 // Create and initialize the DB version table if it doesn't exist.
 func EnsureDBVersionContext(ctx context.Context, db *sql.DB) (int64, error) {
+	fmt.Println("ensureDBVersionContext, version table name:", TableName())
 	dbMigrations, err := store.ListMigrations(ctx, db, TableName())
 	if err != nil {
+		fmt.Println(err)
+		fmt.Println("no version table, create one")
 		return 0, createVersionTable(ctx, db)
 	}
 	// The most recent record for each migration specifies

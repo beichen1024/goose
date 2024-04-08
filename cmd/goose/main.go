@@ -134,6 +134,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("-dbstring=%q: %v\n", dbstring, err)
 	}
+
 	defer func() {
 		if err := db.Close(); err != nil {
 			log.Fatalf("goose: failed to close DB: %v\n", err)
@@ -153,6 +154,10 @@ func main() {
 	}
 	if *noVersioning {
 		options = append(options, goose.WithNoVersioning())
+	}
+	if driver == "bigquery" && !strings.Contains(*table, ".") {
+		fmt.Println("Use table option to set version table to $dataset.goose_db_version")
+		return
 	}
 	if timeout != nil && *timeout != 0 {
 		var cancel context.CancelFunc

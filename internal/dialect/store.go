@@ -69,6 +69,8 @@ func NewStore(d Dialect) (Store, error) {
 		querier = &dialectquery.Ydb{}
 	case Turso:
 		querier = &dialectquery.Turso{}
+	case BigQuery:
+		querier = &dialectquery.Bigquery{}
 	default:
 		return nil, fmt.Errorf("unknown querier dialect: %v", d)
 	}
@@ -93,12 +95,14 @@ var _ Store = (*store)(nil)
 
 func (s *store) CreateVersionTable(ctx context.Context, tx *sql.Tx, tableName string) error {
 	q := s.querier.CreateTable(tableName)
+	fmt.Println(q)
 	_, err := tx.ExecContext(ctx, q)
 	return err
 }
 
 func (s *store) InsertVersion(ctx context.Context, tx *sql.Tx, tableName string, version int64) error {
 	q := s.querier.InsertVersion(tableName)
+	fmt.Println("Insert version sql:", q)
 	_, err := tx.ExecContext(ctx, q, version, true)
 	return err
 }
