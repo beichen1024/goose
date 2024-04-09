@@ -115,6 +115,7 @@ func (s *store) InsertVersionNoTx(ctx context.Context, db *sql.DB, tableName str
 
 func (s *store) DeleteVersion(ctx context.Context, tx *sql.Tx, tableName string, version int64) error {
 	q := s.querier.DeleteVersion(tableName)
+	fmt.Println("delete version:", q)
 	_, err := tx.ExecContext(ctx, q, version)
 	return err
 }

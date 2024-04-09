@@ -19,17 +19,17 @@ func (p *Bigquery) CreateTable(tableName string) string {
 }
 
 func (p *Bigquery) InsertVersion(tableName string) string {
-	q := `INSERT INTO %s (version_id, is_applied) VALUES ($1, $2)`
+	q := `INSERT INTO %s (version_id, is_applied) VALUES (?, ?)`
 	return fmt.Sprintf(q, tableName)
 }
 
 func (p *Bigquery) DeleteVersion(tableName string) string {
-	q := `DELETE FROM %s WHERE version_id=$1`
+	q := `DELETE FROM %s WHERE version_id=?`
 	return fmt.Sprintf(q, tableName)
 }
 
 func (p *Bigquery) GetMigrationByVersion(tableName string) string {
-	q := `SELECT tstamp, is_applied FROM %s WHERE version_id=$1 ORDER BY tstamp DESC LIMIT 1`
+	q := `SELECT tstamp, is_applied FROM %s WHERE version_id=? ORDER BY tstamp DESC LIMIT 1`
 	return fmt.Sprintf(q, tableName)
 }
 
