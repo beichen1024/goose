@@ -40,9 +40,6 @@ type Store interface {
 	// at least one migration, because the initial version (0) is always inserted into the version
 	// table when it is created.
 	ListMigrations(ctx context.Context, db DBTxConn) ([]*ListMigrationsResult, error)
-
-	// TODO(mf): remove this method once the Provider is public and a custom Store can be used.
-	private()
 }
 
 type InsertRequest struct {
