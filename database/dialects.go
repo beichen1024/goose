@@ -27,6 +27,7 @@ const (
 	DialectTiDB       Dialect = "tidb"
 	DialectTurso      Dialect = "turso"
 	DialectYdB        Dialect = "ydb"
+	DialectBigQuery   Dialect = "bigquery"
 
 	// DEPRECATED: Vertica support is deprecated and will be removed in a future release.
 	DialectVertica Dialect = "vertica"
@@ -51,6 +52,7 @@ func NewStore(d Dialect, tableName string) (Store, error) {
 		DialectTurso:      dialects.NewTurso(),
 		DialectVertica:    dialects.NewVertica(),
 		DialectYdB:        dialects.NewYDB(),
+		DialectBigQuery:   dialects.NewBigQuery(),
 	}
 	querier, ok := lookup[d]
 	if !ok {
