@@ -59,10 +59,10 @@ func (p *bigquery) GetLatestVersion(tableName string) string {
 func (p *bigquery) TableExists(tableName string) string {
 	datasetName, tableName := parseBigQueryTableIdentifier(tableName)
 	if datasetName != "" {
-		q := `SELECT EXISTS ( SELECT 1 FROM pg_tables WHERE schemaname = '%s' AND tablename = '%s' )`
+		q := `SELECT count(*) FROM %s.INFORMATION_SCHEMA.TABLES WHERE table_name = '%s'`
 		return fmt.Sprintf(q, datasetName, tableName)
 	}
-	q := `SELECT EXISTS ( SELECT 1 FROM pg_tables WHERE (current_schema() IS NULL OR schemaname = current_schema()) AND tablename = '%s' )`
+	q := `SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_name = '%s'`
 	return fmt.Sprintf(q, tableName)
 }
 
